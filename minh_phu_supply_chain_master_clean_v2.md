@@ -24,90 +24,55 @@ tags:
 ```mermaid
 flowchart TD
 
-%% =====================
-%% LEFT NOTES
-%% =====================
-
 subgraph NOTES["Notes"]
 direction TB
-N1["Selected product<br/>Raw IQF Frozen Whiteleg Shrimp<br/>Peeled & Deveined (PD)"]
-N2["Processing notes<br/>Receiving & QC<br/>Washing<br/>Peeling & deveining<br/>IQF freezing<br/>Glazing / refreezing<br/>Metal detection<br/>Cartoning"]
-N3["Key locations<br/>Ninh Thuan hatchery<br/>Loc An & Kien Giang farms<br/>Ca Mau Complex<br/>Hau Giang"]
-N4["Supporting flow<br/>Traceability<br/>Quality control<br/>Food safety<br/>Cold-chain information"]
+N1["Selected product"]
+N2["Processing notes"]
+N3["Key locations"]
+N4["Supporting flow"]
 end
-
-%% =====================
-%% UPSTREAM
-%% =====================
 
 subgraph UP["UPSTREAM"]
 direction TB
-A["Broodstock / genetics suppliers"]
-B["Feed & aquaculture inputs<br/>De Heus Vietnam"]
-C["Minh Phu Ninh Thuan Aquatic Hatchery<br/>Larvae → Post-larvae"]
-D["Minh Phu's farms + linked / external farmers"]
-E["Harvest & collection"]
-
-A --> C
-B --> C
-C --> D
-D --> E
+A["Broodstock / Feed"]
+B["Hatchery"]
+C["Farms + linked farmers"]
+D["Harvest & collection"]
+A --> B --> C --> D
 end
 
-%% =====================
-%% MAIN FLOW
-%% =====================
+E["MINH PHU PROCESSING COMPLEX<br/>Ca Mau Complex | Hau Giang"]
+F["Raw PD processing"]
+G["Frozen storage"]
+H["Refrigerated logistics"]
+I["Export gateway"]
+J["Reefer ocean freight"]
 
-F["MINH PHU PROCESSING COMPLEX<br/>Ca Mau Complex | Hau Giang"]
+K1["Mseafood"]
+K2["Ebisumo"]
+K3["Others"]
 
-G["Raw PD processing"]
+L["Distributor / DC"]
+M["Retail / Foodservice"]
+N["End Consumer"]
 
-H["Frozen storage<br/>≤ -18°C"]
+X["Imported frozen Vannamei"]
 
-I["Refrigerated domestic logistics<br/>Mekong Logistics and/or contracted providers"]
+D --> E --> F --> G --> H --> I --> J
+J --> K1
+J --> K2
+J --> K3
+K1 --> L
+K2 --> L
+K3 --> L
+L --> M --> N
 
-J["Vietnam export gateway<br/>e.g. Vung Tau"]
+X -.-> E
 
-K["Reefer ocean freight"]
-
-L1["Mseafood<br/>USA"]
-L2["Ebisumo Logistics<br/>Japan"]
-L3["Other importers / customers"]
-
-M["Distributor / DC / wholesaler"]
-
-N["Retail / Foodservice"]
-
-O["End Consumer"]
-
-X["Alternative raw-material lane<br/>Imported frozen Vannamei"]
-
-%% main connections
-E --> F
-F --> G
-G --> H
-H --> I
-I --> J
-J --> K
-
-K --> L1
-K --> L2
-K --> L3
-
-L1 --> M
-L2 --> M
-L3 --> M
-
-M --> N
-N --> O
-
-X -.-> F
-
-%% align notes to left visually
 N1 ~~~ A
-N2 ~~~ C
-N3 ~~~ F
-N4 ~~~ I
+N2 ~~~ F
+N3 ~~~ E
+N4 ~~~ H
 ```
 
 ## Clean one-line map
