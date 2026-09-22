@@ -24,58 +24,96 @@ tags:
 ```mermaid
 flowchart TD
 
+    %% =========================
+    %% UPSTREAM INPUTS
+    %% =========================
+
     A["Broodstock / genetics suppliers"]
     B["Feed & aquaculture inputs<br/>De Heus Vietnam"]
 
-    C["Minh Phu Ninh Thuan Aquatic hatchery<br/>Larvae → Post-larvae"]
+    C["Minh Phu Ninh Thuan Aquatic Hatchery<br/>Larvae → Post-larvae"]
 
-    D1["Minh Phu's farms"]
+    D1["Minh Phu's farms<br/>Loc An • Kien Giang"]
     D2["Linked / external farmers & cooperatives"]
 
-    E["Harvest & collection<br/>Minh Phu's linked sourcing network"]
+    E["Harvest & collection<br/>Minh Phu-linked sourcing network"]
 
-    F1["Minh Phu Ca Mau Complex<br/>Raw IQF / PD processing<br/>Frozen storage"]
-    F2["Minh Phu Hau Giang<br/>Raw IQF / PD processing<br/>Frozen storage • Packaging • Container-port access"]
 
-    G["Raw PD processing<br/>Receiving/QC → washing → peeling & deveining<br/>→ IQF freezing → glazing/refreezing<br/>→ bagging/sealing → metal detection → cartoning"]
+    %% =========================
+    %% PROCESSING COMPLEX
+    %% =========================
 
-    H["Frozen storage<br/>Product / cold store ≤ -18°C"]
+    F["MINH PHU PROCESSING COMPLEX<br/><br/>Cà Mau Complex • Hậu Giang"]
+
+    G["Raw PD processing<br/>Receiving & QC → Washing → Peeling & deveining<br/>→ IQF freezing → Glazing / refreezing<br/>→ Bagging / sealing → Metal detection → Cartoning"]
+
+    H["Frozen storage<br/>≤ -18°C"]
+
+
+    %% =========================
+    %% LOGISTICS
+    %% =========================
 
     I["Refrigerated domestic logistics<br/>Mekong Logistics and/or contracted providers"]
 
-    J["Vietnam export gateway<br/>Varies by shipment<br/>Recent US examples document Vung Tau"]
+    J["Vietnam export gateway<br/>e.g. Vung Tau"]
 
-    K["External reefer ocean freight<br/>Carrier varies by shipment"]
+    K["Reefer ocean freight"]
 
-    L1["Mseafood Corporation – USA<br/>Minh Phu US sales entity / consignee"]
-    L2["Ebisumo Logistics – Japan<br/>Minh Phu Japan sales/import entity"]
-    L3["Other importers / customers<br/>Market-specific"]
 
-    M["Distributor / DC / wholesaler<br/>Category-level unless named evidence exists"]
+    %% =========================
+    %% DOWNSTREAM
+    %% =========================
+
+    L1["Mseafood Corporation<br/>USA"]
+
+    L2["Ebisumo Logistics<br/>Japan"]
+
+    L3["Other importers / customers"]
+
+    M["Distributor / DC / wholesaler"]
+
     N["Retail / Foodservice"]
+
     O["End Consumer"]
 
-    X["Alternative raw-material lane<br/>Imported frozen Vannamei<br/>e.g. documented India / Ecuador-origin shipments"]
+
+    %% =========================
+    %% ALTERNATIVE SOURCING
+    %% =========================
+
+    X["Alternative raw-material lane<br/>Imported frozen Vannamei<br/>India • Ecuador"]
+
+
+    %% =========================
+    %% PROCESSING COMPLEX NOTES
+    %% =========================
+
+    P1["CÀ MAU COMPLEX<br/>Raw IQF / PD processing<br/>Frozen storage"]
+
+    P2["HẬU GIANG<br/>Raw IQF / PD processing<br/>Frozen storage<br/>Packaging<br/>Container-port access"]
+
+
+    %% =========================
+    %% MAIN PHYSICAL FLOW
+    %% =========================
 
     A --> C
     B --> C
+
     C --> D1
     C --> D2
 
     D1 --> E
     D2 --> E
 
+    E --> F
 
-    E --> F1
-    E --> F2
+    X -. alternative sourcing .-> F
 
-    X -. alternative sourcing .-> F1
-    X -. alternative sourcing .-> F2
-
-    F1 --> G
-    F2 --> G
-
+    F --> G
     G --> H
+
     H --> I
     I --> J
     J --> K
@@ -90,6 +128,35 @@ flowchart TD
 
     M --> N
     N --> O
+
+
+    %% =========================
+    %% INFORMATION / NOTES
+    %% =========================
+
+    F -. facilities .-> P1
+    F -. facilities .-> P2
+
+
+    %% =========================
+    %% STYLE
+    %% =========================
+
+    classDef upstream fill:#ECFDF5,stroke:#16A34A,stroke-width:1.5px,color:#14532D;
+    classDef focal fill:#E0F2FE,stroke:#0369A1,stroke-width:3px,color:#0C4A6E;
+    classDef process fill:#EFF6FF,stroke:#2563EB,stroke-width:1.5px,color:#1E3A8A;
+    classDef logistics fill:#ECFEFF,stroke:#0891B2,stroke-width:1.5px,color:#164E63;
+    classDef downstream fill:#F0F9FF,stroke:#0284C7,stroke-width:1.5px,color:#0C4A6E;
+    classDef note fill:#F8FAFC,stroke:#94A3B8,stroke-width:1px,stroke-dasharray:4 3,color:#334155;
+    classDef alternative fill:#FFF7ED,stroke:#EA580C,stroke-width:1.5px,stroke-dasharray:5 5,color:#9A3412;
+
+    class A,B,C,D1,D2,E upstream;
+    class F focal;
+    class G,H process;
+    class I,J,K logistics;
+    class L1,L2,L3,M,N,O downstream;
+    class P1,P2 note;
+    class X alternative;
 ```
 
 ## Clean one-line map
