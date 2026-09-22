@@ -24,55 +24,85 @@ tags:
 ```mermaid
 flowchart TD
 
-subgraph NOTES["Notes"]
-direction TB
-N1["Selected product"]
-N2["Processing notes"]
-N3["Key locations"]
-N4["Supporting flow"]
-end
+    A["Broodstock / genetics suppliers"]
 
-subgraph UP["UPSTREAM"]
-direction TB
-A["Broodstock / Feed"]
-B["Hatchery"]
-C["Farms + linked farmers"]
-D["Harvest & collection"]
-A --> B --> C --> D
-end
+    B["Feed & aquaculture inputs<br/>De Heus Vietnam"]
 
-E["MINH PHU PROCESSING COMPLEX<br/>Ca Mau Complex | Hau Giang"]
-F["Raw PD processing"]
-G["Frozen storage"]
-H["Refrigerated logistics"]
-I["Export gateway"]
-J["Reefer ocean freight"]
+    C["Minh Phu Ninh Thuan Aquatic hatchery<br/>Larvae -> Post-larvae"]
 
-K1["Mseafood"]
-K2["Ebisumo"]
-K3["Others"]
+    D1["Minh Phu's farmn"]
 
-L["Distributor / DC"]
-M["Retail / Foodservice"]
-N["End Consumer"]
+    D2["Linked / external farmers & cooperatives"]
 
-X["Imported frozen Vannamei"]
+    E["Harvest & collection<br/>Minh Phu's linked sourcing network"]
 
-D --> E --> F --> G --> H --> I --> J
-J --> K1
-J --> K2
-J --> K3
-K1 --> L
-K2 --> L
-K3 --> L
-L --> M --> N
+    F1["Minh Phu complex"]
 
-X -.-> E
+    G["Raw PD processing<br/>Receiving/QC → washing → peeling & deveining<br/>→ IQF freezing → glazing/refreezing<br/>→ bagging/sealing → metal detection → cartoning"]
 
-N1 ~~~ A
-N2 ~~~ F
-N3 ~~~ E
-N4 ~~~ H
+    H["Frozen storage<br/>Product / cold store ≤ -18°C"]
+
+    I["Refrigerated domestic logistics<br/>Mekong Logistics and/or contracted providers"]
+
+    J["Vietnam export gateway<br/>Varies by shipment<br/>Recent US examples document Vung Tau"]
+
+    K["External reefer ocean freight<br/>Carrier varies by shipment"]
+
+    L1["Mseafood Corporation – USA<br/>Minh Phu US sales entity / consignee"]
+
+    L2["Ebisumo Logistics – Japan<br/>Minh Phu Japan sales/import entity"]
+
+    L3["Other importers / customers<br/>Market-specific"]
+
+    M["Distributor / DC / wholesaler<br/>Category-level unless named evidence exists"]
+
+    N["Retail / Foodservice"]
+
+    O["End Consumer"]
+
+    X["Alternative raw-material lane<br/>Imported frozen Vannamei<br/>e.g. documented India / Ecuador-origin shipments"]
+
+    A --> C
+
+    B --> C
+
+    C --> D1
+
+    C --> D2
+
+    D1 --> E
+
+    D2 --> E
+
+    E --> F1
+
+    X -. alternative sourcing .-> F1
+
+    F1 --> G
+
+    G --> H
+
+    H --> I
+
+    I --> J
+
+    J --> K
+
+    K --> L1
+
+    K --> L2
+
+    K --> L3
+
+    L1 --> M
+
+    L2 --> M
+
+    L3 --> M
+
+    M --> N
+
+    N --> O
 ```
 
 ## Clean one-line map
