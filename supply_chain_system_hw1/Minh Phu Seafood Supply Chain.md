@@ -95,9 +95,9 @@ flowchart TD
 
 The selected product is **Raw IQF Frozen Whiteleg Shrimp (Vannamei) – Peeled & Deveined (PD)**. It is an export frozen-seafood product, processed by IQF and stored under frozen conditions.
 
-<img src="https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/1.png" width="300" />
-<img src="https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/2.png" width="300" />
-<img src="https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/3.png" width="300" />
+| | | |
+|---|---|---|
+| <img src="https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/1.png?raw=true" width="250" /> | <img src="https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/2.png?raw=true" width="250" /> | <img src="https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/3.png?raw=true" width="250" /> |
 
 More at [Tôm thẻ tươi](https://minhphu.com/types-of-shrimp/vannamei/)
 # 2. Upstream
