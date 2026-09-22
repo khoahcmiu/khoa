@@ -22,157 +22,77 @@ tags:
 > **Mapping principle:** The map uses named actors where available and category-level nodes for the remaining parts of the chain.
 
 ```mermaid
-flowchart LR
+flowchart TD
 
-%% =====================================================
-%% LEFT NOTES PANEL
-%% =====================================================
+%% =====================
+%% LEFT NOTES
+%% =====================
 
-subgraph NOTES[" "]
+subgraph NOTES["Notes"]
 direction TB
-
-NOTE1["1. SELECTED PRODUCT<br/><br/>
-Raw IQF Frozen Whiteleg Shrimp<br/>
-Peeled & Deveined (PD)<br/>
-Export frozen seafood"]
-
-NOTE2["2. PROCESSING NOTES<br/><br/>
-Receiving & QC<br/>
-Washing<br/>
-Peeling & deveining<br/>
-IQF freezing<br/>
-Glazing / refreezing<br/>
-Metal detection<br/>
-Cartoning"]
-
-NOTE3["3. KEY LOCATIONS<br/><br/>
-Ninh Thuan hatchery<br/>
-Loc An & Kien Giang farms<br/>
-Ca Mau Complex<br/>
-Hau Giang"]
-
-NOTE4["4. SUPPORTING FLOW<br/><br/>
-Traceability<br/>
-Quality control<br/>
-Food safety<br/>
-Cold-chain information"]
-
-NOTE1 ~~~ NOTE2
-NOTE2 ~~~ NOTE3
-NOTE3 ~~~ NOTE4
-
+N1["Selected product<br/>Raw IQF Frozen Whiteleg Shrimp<br/>Peeled & Deveined (PD)"]
+N2["Processing notes<br/>Receiving & QC<br/>Washing<br/>Peeling & deveining<br/>IQF freezing<br/>Glazing / refreezing<br/>Metal detection<br/>Cartoning"]
+N3["Key locations<br/>Ninh Thuan hatchery<br/>Loc An & Kien Giang farms<br/>Ca Mau Complex<br/>Hau Giang"]
+N4["Supporting flow<br/>Traceability<br/>Quality control<br/>Food safety<br/>Cold-chain information"]
 end
 
-
-%% =====================================================
-%% MAIN SUPPLY CHAIN
-%% =====================================================
-
-subgraph SC["MINH PHU SEAFOOD SUPPLY CHAIN"]
-direction LR
-
-
-%% ---------------------
+%% =====================
 %% UPSTREAM
-%% ---------------------
+%% =====================
 
-subgraph UP["UPSTREAM<br/>Inputs • Hatchery • Farming • Harvest"]
+subgraph UP["UPSTREAM"]
 direction TB
-
-A["Broodstock /<br/>genetics suppliers"]
-
+A["Broodstock / genetics suppliers"]
 B["Feed & aquaculture inputs<br/>De Heus Vietnam"]
-
-C["Minh Phu Ninh Thuan<br/>Aquatic Hatchery<br/>Larvae → Post-larvae"]
-
-D1["Minh Phu's farms<br/>Loc An • Kien Giang"]
-
-D2["Linked / external farmers<br/>& cooperatives"]
-
+C["Minh Phu Ninh Thuan Aquatic Hatchery<br/>Larvae → Post-larvae"]
+D["Minh Phu's farms + linked / external farmers"]
 E["Harvest & collection"]
 
 A --> C
 B --> C
-
-C --> D1
-C --> D2
-
-D1 --> E
-D2 --> E
-
+C --> D
+D --> E
 end
 
+%% =====================
+%% MAIN FLOW
+%% =====================
 
-%% ---------------------
-%% PROCESSING COMPLEX
-%% ---------------------
+F["MINH PHU PROCESSING COMPLEX<br/>Ca Mau Complex | Hau Giang"]
 
-subgraph PROC["PROCESSING & INTERNAL LOGISTICS<br/>Value Addition • Cold Chain"]
-direction LR
-
-F["MINH PHU<br/>PROCESSING COMPLEX<br/><br/>
-CA MAU COMPLEX<br/>
-Raw IQF / PD processing<br/>
-Frozen storage<br/><br/>
-HAU GIANG<br/>
-Raw IQF / PD processing<br/>
-Frozen storage<br/>
-Packaging<br/>
-Container-port access"]
-
-G["RAW PD PROCESSING<br/><br/>
-Receiving & QC<br/>
-↓<br/>
-Washing<br/>
-↓<br/>
-Peeling & deveining<br/>
-↓<br/>
-IQF freezing<br/>
-↓<br/>
-Glazing / refreezing<br/>
-↓<br/>
-Packing • Metal detection"]
+G["Raw PD processing"]
 
 H["Frozen storage<br/>≤ -18°C"]
 
-I["Refrigerated domestic logistics<br/>Mekong Logistics and/or<br/>contracted providers"]
+I["Refrigerated domestic logistics<br/>Mekong Logistics and/or contracted providers"]
 
 J["Vietnam export gateway<br/>e.g. Vung Tau"]
 
 K["Reefer ocean freight"]
 
+L1["Mseafood<br/>USA"]
+L2["Ebisumo Logistics<br/>Japan"]
+L3["Other importers / customers"]
+
+M["Distributor / DC / wholesaler"]
+
+N["Retail / Foodservice"]
+
+O["End Consumer"]
+
+X["Alternative raw-material lane<br/>Imported frozen Vannamei"]
+
+%% main connections
+E --> F
 F --> G
 G --> H
 H --> I
 I --> J
 J --> K
 
-end
-
-
-%% ---------------------
-%% DOWNSTREAM
-%% ---------------------
-
-subgraph DOWN["DOWNSTREAM<br/>Export • Distribution • Market"]
-direction TB
-
-subgraph OVERSEAS["Overseas customers"]
-direction LR
-
-L1["Mseafood<br/>USA"]
-
-L2["Ebisumo Logistics<br/>Japan"]
-
-L3["Other importers<br/>& customers"]
-
-end
-
-M["Distributor / DC /<br/>wholesaler"]
-
-N["Retail / Foodservice"]
-
-O["End Consumer"]
+K --> L1
+K --> L2
+K --> L3
 
 L1 --> M
 L2 --> M
@@ -181,101 +101,13 @@ L3 --> M
 M --> N
 N --> O
 
-end
-
-
-%% ---------------------
-%% MAIN CONNECTIONS
-%% ---------------------
-
-E --> F
-K --> L1
-K --> L2
-K --> L3
-
-end
-
-
-%% =====================================================
-%% ALTERNATIVE RAW MATERIAL
-%% =====================================================
-
-X["ALTERNATIVE RAW-MATERIAL LANE<br/>Imported frozen Vannamei<br/>India • Ecuador"]
-
 X -.-> F
 
-
-%% =====================================================
-%% SUPPORTING INFORMATION FLOW
-%% =====================================================
-
-subgraph INFO["SUPPORTING INFORMATION FLOW"]
-direction LR
-
-R1["Farm records"]
-R2["Traceability data"]
-R3["Food safety"]
-R4["Customer feedback"]
-
-R1 --> R2 --> R3 --> R4
-
-end
-
-
-%% =====================================================
-%% POSITIONING
-%% =====================================================
-
-NOTE2 ~~~ A
-NOTE3 ~~~ X
-K ~~~ R3
-
-
-%% =====================================================
-%% STYLES
-%% =====================================================
-
-classDef note fill:#EAF5FF,stroke:#A7C7E7,stroke-width:1px,color:#123B63;
-classDef upstream fill:#ECFDF5,stroke:#22A65A,stroke-width:1.5px,color:#14532D;
-classDef focal fill:#E7F3FF,stroke:#1778C8,stroke-width:2.5px,color:#103A63;
-classDef process fill:#F0F7FF,stroke:#2587CE,stroke-width:1.5px,color:#123B63;
-classDef logistics fill:#EFFBFF,stroke:#1399BB,stroke-width:1.5px,color:#164E63;
-classDef downstream fill:#F2FBFF,stroke:#149FC4,stroke-width:1.5px,color:#0C4A6E;
-classDef alternative fill:#F8FAFC,stroke:#2878B5,stroke-width:1.5px,stroke-dasharray:6 4,color:#174A73;
-classDef info fill:#F1F8FD,stroke:#9FC7DF,stroke-width:1px,color:#174A73;
-
-class NOTE1,NOTE2,NOTE3,NOTE4 note;
-
-class A,B,C,D1,D2,E upstream;
-
-class F focal;
-class G,H process;
-class I,J,K logistics;
-
-class L1,L2,L3,M,N,O downstream;
-
-class X alternative;
-
-class R1,R2,R3,R4 info;
-
-
-%% =====================================================
-%% SUBGRAPH STYLES
-%% =====================================================
-
-style NOTES fill:#F8FCFF,stroke:#D7E7F3,stroke-width:1px
-
-style UP fill:#F3FFF7,stroke:#6ED89A,stroke-width:1px
-
-style PROC fill:#F4FAFF,stroke:#65B7E6,stroke-width:1px
-
-style DOWN fill:#F3FCFF,stroke:#6ACCE0,stroke-width:1px
-
-style OVERSEAS fill:#F4FFFB,stroke:#9EDBCB,stroke-width:1px
-
-style INFO fill:#F7FBFE,stroke:#C9DFEC,stroke-width:1px
-
-style SC fill:#FFFFFF,stroke:#FFFFFF
+%% align notes to left visually
+N1 ~~~ A
+N2 ~~~ C
+N3 ~~~ F
+N4 ~~~ I
 ```
 
 ## Clean one-line map
