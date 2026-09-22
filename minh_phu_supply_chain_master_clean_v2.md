@@ -24,85 +24,122 @@ tags:
 ```mermaid
 flowchart TD
 
-    A["Broodstock / genetics suppliers"]
+    %% =========================
+    %% UPSTREAM
+    %% =========================
+    subgraph U["UPSTREAM"]
+        A["Broodstock / genetics suppliers"]
 
-    B["Feed & aquaculture inputs<br/>De Heus Vietnam"]
+        B["Shrimp feed & technical support<br/>De Heus Vietnam"]
 
-    C["Minh Phu Ninh Thuan Aquatic hatchery<br/>Larvae -> Post-larvae"]
+        C["Minh Phu Aquatic Larvae<br/>Ninh Thuan Hatchery<br/>Post-larvae"]
 
-    D1["Minh Phu's farmn"]
+        S["Minh Phu Seafood Supply Chain<br/>Farm inputs • PL distribution<br/>Farmer support"]
 
-    D2["Linked / external farmers & cooperatives"]
+        D1["Minh Phu farms<br/>Loc An • Kien Giang"]
 
-    E["Harvest & collection<br/>Minh Phu's linked sourcing network"]
+        D2["Linked / external farmers<br/>& cooperatives"]
 
-    F1["Minh Phu complex"]
+        A --> C
+        C --> D1
+        C --> S
 
-    G["Raw PD processing<br/>Receiving/QC → washing → peeling & deveining<br/>→ IQF freezing → glazing/refreezing<br/>→ bagging/sealing → metal detection → cartoning"]
+        B --> D1
 
-    H["Frozen storage<br/>Product / cold store ≤ -18°C"]
+        S --> D1
+        S --> D2
+    end
 
-    I["Refrigerated domestic logistics<br/>Mekong Logistics and/or contracted providers"]
 
-    J["Vietnam export gateway<br/>Varies by shipment<br/>Recent US examples document Vung Tau"]
+    %% =========================
+    %% INBOUND LOGISTICS
+    %% =========================
+    subgraph IN["INBOUND LOGISTICS"]
+        E["Harvest & collection"]
 
-    K["External reefer ocean freight<br/>Carrier varies by shipment"]
+        T["Raw shrimp transport<br/>to processing facilities"]
 
-    L1["Mseafood Corporation – USA<br/>Minh Phu US sales entity / consignee"]
+        E --> T
+    end
 
-    L2["Ebisumo Logistics – Japan<br/>Minh Phu Japan sales/import entity"]
+    D1 --> E
+    D2 --> E
 
-    L3["Other importers / customers<br/>Market-specific"]
 
-    M["Distributor / DC / wholesaler<br/>Category-level unless named evidence exists"]
+    %% =========================
+    %% FOCAL COMPANY / PROCESSING
+    %% =========================
+    subgraph FC["FOCAL COMPANY & PROCESSING"]
+        
+        MPC["FOCAL COMPANY<br/>MINH PHU SEAFOOD CORPORATION<br/>Processing • Export • Supply-chain coordination"]
 
-    N["Retail / Foodservice"]
+        F["Selected-product processing facilities<br/>MP Ca Mau Complex • MP Hau Giang Factory"]
 
-    O["End Consumer"]
+        G["Raw PD processing<br/>Receiving & QC → Washing → Peeling & deveining<br/>→ IQF freezing → Glazing / refreezing<br/>→ Bagging → Metal detection → Cartoning"]
 
-    X["Alternative raw-material lane<br/>Imported frozen Vannamei<br/>e.g. documented India / Ecuador-origin shipments"]
+        H["Frozen storage<br/>≤ -18°C"]
 
-    A --> C
+        F --> G
+        G --> H
 
-    B --> C
+        MPC -. coordinates .-> F
+    end
 
-    C --> D1
+    T --> F
 
-    C --> D2
 
-    D1 --> E
+    %% Alternative sourcing
+    X["Alternative raw-material lane<br/>Imported frozen Vannamei<br/>India • Ecuador"]
 
-    D2 --> E
+    X -.-> F
 
-    E --> F1
 
-    X -. alternative sourcing .-> F1
+    %% =========================
+    %% OUTBOUND LOGISTICS
+    %% =========================
+    subgraph OUT["OUTBOUND LOGISTICS"]
 
-    F1 --> G
+        I["Refrigerated domestic logistics<br/>Mekong Logistics and/or<br/>contracted providers"]
 
-    G --> H
+        J["Vietnam export gateway<br/>e.g. Vung Tau"]
 
-    H --> I
+        K["Reefer ocean freight"]
 
-    I --> J
+        I --> J
+        J --> K
+    end
 
-    J --> K
+    H --> I
 
-    K --> L1
 
-    K --> L2
+    %% =========================
+    %% DOWNSTREAM
+    %% =========================
+    subgraph D["DOWNSTREAM"]
 
-    K --> L3
+        L1["Mseafood Corporation<br/>USA"]
 
-    L1 --> M
+        L2["Ebisumo Logistics<br/>Japan"]
 
-    L2 --> M
+        L3["Other importers / customers"]
 
-    L3 --> M
+        M["Distributor / DC / wholesaler"]
 
-    M --> N
+        N["Retail / Foodservice"]
 
-    N --> O
+        O["End Consumer"]
+
+        L1 --> M
+        L2 --> M
+        L3 --> M
+
+        M --> N
+        N --> O
+    end
+
+    K --> L1
+    K --> L2
+    K --> L3
 ```
 
 ## Clean one-line map
