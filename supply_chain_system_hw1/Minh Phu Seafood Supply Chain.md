@@ -14,7 +14,7 @@ Author: Nguyen Huu Khoa MIEIU26004
 ---
 ![MPSC.png](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/MPSC.png)
 
-> [Product]
+> [!NOTE]
 > **Selected product:** Raw IQF Frozen Whiteleg Shrimp (*Penaeus vannamei*) – Peeled & Deveined (PD).  
 
 ```mermaid
@@ -94,7 +94,7 @@ flowchart TD
 # 1. Product and Scope
 
 The selected product is **Raw IQF Frozen Whiteleg Shrimp (Vannamei) – Peeled & Deveined (PD)**. It is an export frozen-seafood product, processed by IQF and stored under frozen conditions.
-![1.png|300](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/1.png)]![2.png|300](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/2.png)]
+![1.png|300](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/1.png)]![2.png|300](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/2.png)
 
 More at [Tôm thẻ tươi](https://minhphu.com/types-of-shrimp/vannamei/)
 # 2. Upstream
