@@ -12,7 +12,7 @@ tags:
   - cold-chain
 Author: Nguyen Huu Khoa MIEIU26004
 ---
-![[MPSC.png](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/MPSC.png)]
+![MPSC.png](https://github.com/khoahcmiu/khoa/blob/main/supply_chain_system_hw1/MPSC.png)]
 
 > [!Product]
 > **Selected product:** Raw IQF Frozen Whiteleg Shrimp (*Penaeus vannamei*) – Peeled & Deveined (PD).  
