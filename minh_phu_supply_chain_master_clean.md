@@ -27,13 +27,12 @@ flowchart TD
     A["Broodstock / genetics suppliers"]
     B["Feed & aquaculture inputs<br/>De Heus Vietnam"]
 
-    C["Minh Phu Ninh Thuan Aquatic - hatchery<br/>Larvae -> Post-larvae"]
+    C["Minh Phu Ninh Thuan Aquatic hatchery<br/>Larvae -> Post-larvae"]
 
-    D1["Minh Phu Loc An<br/>Vannamei + Black Tiger"]
-    D2["Minh Phu Kien Giang<br/>Vannamei + Black Tiger"]
-    D3["Linked / external farmers & cooperatives"]
+    D1["Minh Phu's farmn"]
+    D2["Linked / external farmers & cooperatives"]
 
-    E["Harvest & collection<br/>Minh Phu-linked sourcing network<br/>MPBiO lane may include live transport / IKEJIME"]
+    E["Harvest & collection<br/>Minh Phu's linked sourcing network"]
 
     F1["Minh Phu Ca Mau processing network<br/>Detailed IQF process evidence"]
     F2["Minh Phu Hau Giang<br/>Direct commercial evidence for Raw IQF Vannamei PD"]
@@ -62,11 +61,10 @@ flowchart TD
     B --> C
     C --> D1
     C --> D2
-    C -. may supply linked farms .-> D3
 
     D1 --> E
     D2 --> E
-    D3 --> E
+
 
     E --> F1
     E --> F2
