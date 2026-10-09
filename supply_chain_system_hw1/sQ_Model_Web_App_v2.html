@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>(s, Q) / (Q, r) Model – Iterative Solver</title>
+<style>
+  :root{--blue:#1F4E79;--light:#EAF1F8;--green:#2E7D32;--orange:#C55A11}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:#F4F6F9;color:#222}
+  header{background:var(--blue);color:#fff;padding:14px 24px}
+  header h1{margin:0;font-size:20px} header p{margin:4px 0 0;font-size:13px;opacity:.85}
+  .wrap{display:flex;gap:18px;padding:18px;flex-wrap:wrap}
+  .card{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);padding:16px}
+  .left{flex:0 0 360px}.right{flex:1;min-width:420px}
+  h2{color:var(--blue);font-size:16px;margin:0 0 10px;border-bottom:2px solid var(--light);padding-bottom:6px}
+  h3{color:var(--blue);font-size:14px;margin:14px 0 6px}
+  label{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin:5px 0;gap:8px}
+  label span.u{color:#888;font-size:11px;width:70px}
+  input[type=number],select{width:110px;padding:5px;border:1px solid #bbb;border-radius:5px;text-align:right}
+  select.wide{width:100%;text-align:left}
+  .row{display:flex;gap:10px;font-size:13px;margin:4px 0}
+  button{width:100%;padding:10px;margin-top:12px;border:0;border-radius:6px;background:var(--green);color:#fff;font-size:15px;font-weight:bold;cursor:pointer}
+  button.sec{background:#5B7DA8;font-size:13px;padding:7px}
+  .hint{font-size:11px;color:#777}
+  .step{border-left:4px solid var(--blue);background:var(--light);padding:8px 12px;margin:8px 0;border-radius:0 6px 6px 0}
+  .step b{color:var(--blue)}
+  .mono{font-family:Consolas,monospace;font-size:13px;line-height:1.6;white-space:pre-wrap}
+  .iter{border-left-color:var(--orange);background:#FFF6EF}
+  table{border-collapse:collapse;width:100%;font-size:13px;margin-top:6px}
+  th{background:var(--blue);color:#fff;padding:6px} td{padding:5px;text-align:right;border-bottom:1px solid #ddd}
+  tr:last-child td{background:#E8F5E9;font-weight:bold}
+  .result{background:#E8F5E9;border:2px solid var(--green);border-radius:8px;padding:12px;margin-top:12px}
+  .result .big{font-size:22px;color:var(--green);font-weight:bold}
+  .hidden{display:none}
+  .err{color:#C00000;font-weight:bold}
+</style>
+</head>
+<body>
+<header>
+  <h1>(s, Q) / (Q, r) Inventory Model – Iterative Method</h1>
+  <p>1) Enter input data &nbsp;→&nbsp; 2) Click SOLVE &nbsp;→&nbsp; 3) Read every calculation step &nbsp;→&nbsp; 4) Result</p>
+</header>
+
+<div class="wrap">
+<!-- ======================= INPUT ======================= -->
+<div class="card left">
+  <h2>STEP 1 – Input data</h2>
+  <p class="hint">Use ONE time unit (week or year) for D, L and h.</p>
+
+  <h3>A. Demand</h3>
+  <select id="dist" class="wide" onchange="toggle()">
+    <option value="np">Normal – demand per period (θ = μ·L, σ_LT = σ·√L)</option>
+    <option value="nl">Normal – demand during lead time given (θ, σ)</option>
+    <option value="u">Uniform – lead-time demand U(a, b)</option>
+    <option value="e">Exponential – lead-time demand, mean θ</option>
+  </select>
+  <div id="g_norm">
+    <label>Mean μ (or θ) <input id="mu" type="number" step="any"><span class="u">units</span></label>
+    <label>Spread value <input id="spread" type="number" step="any"><span class="u"></span></label>
+    <div class="row">Spread is:
+      <label style="margin:0"><input type="radio" name="st" value="sd" checked> Std dev σ</label>
+      <label style="margin:0"><input type="radio" name="st" value="var"> Variance σ²</label></div>
+  </div>
+  <label>Lead time L <input id="L" type="number" step="any"><span class="u">periods</span></label>
+  <div id="g_unif">
+    <label>Min a <input id="a" type="number" step="any"><span class="u">units</span></label>
+    <label>Max b <input id="b" type="number" step="any"><span class="u">units</span></label>
+  </div>
+  <div id="g_exp"><label>Mean θ <input id="te" type="number" step="any"><span class="u">units</span></label></div>
+  <div id="g_D"><label>Demand rate D <input id="D" type="number" step="any"><span class="u">units/period</span></label></div>
+
+  <h3>B. Costs</h3>
+  <label>Ordering cost A <input id="A" type="number" step="any"><span class="u">$/order</span></label>
+  <label>Backorder cost p <input id="p" type="number" step="any"><span class="u">$/unit short</span></label>
+  <div class="row">Holding cost:
+    <label style="margin:0"><input type="radio" name="hm" value="rate" checked onchange="toggle()"> rate × v</label>
+    <label style="margin:0"><input type="radio" name="hm" value="direct" onchange="toggle()"> enter h</label></div>
+  <div id="g_rate">
+    <label>Unit cost v <input id="v" type="number" step="any"><span class="u">$/unit</span></label>
+    <label>Carrying rate <input id="rate" type="number" step="any"><span class="u">$/$/period</span></label>
+  </div>
+  <div id="g_h"><label>Holding cost h <input id="h" type="number" step="any"><span class="u">$/unit/period</span></label></div>
+
+  <h3>C. Settings</h3>
+  <label><span><input id="roundz" type="checkbox" checked> Round z to 2 dp (Z-table)</span></label>
+  <label>Max iterations <input id="maxit" type="number" value="20"><span class="u"></span></label>
+
+  <button onclick="solve()">▶ SOLVE STEP BY STEP</button>
+  <button class="sec" onclick="window.print()">Print / Save as PDF</button>
+</div>
+
+<!-- ======================= OUTPUT ======================= -->
+<div class="card right">
+  <h2>Step-by-step solution</h2>
+  <div id="out"><p class="hint">Enter data and click SOLVE.</p></div>
+</div>
+</div>
+
+<script>
+// ===================== Normal distribution helpers =====================
+const pdf = z => Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+function cdf(z){ // Abramowitz-Stegun 7.1.26 via erf, |err| < 1.5e-7
+  const t=1/(1+0.3275911*Math.abs(z)/Math.SQRT2);
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-z*z/2);
+  return z>=0?0.5*(1+y):0.5*(1-y);
+}
+function invcdf(p){ // Acklam's algorithm (NORMSINV), rel. err < 1.2e-9
+  const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.3577518672690,-30.66479806614716,2.506628277459239],
+        b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],
+        c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],
+        d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
+  const pl=0.02425; let q,r;
+  if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  if(p>1-pl){q=Math.sqrt(-2*Math.log(1-p));return-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  q=p-0.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+}
+const f=(x,d=4)=>Number(x).toFixed(d);
+const $=id=>document.getElementById(id);
+const val=id=>parseFloat($(id).value);
+const radio=n=>document.querySelector(`input[name=${n}]:checked`).value;
+
+// ===================== Default values (Assignment 2 – Problem 2) =====================
+const DEF={dist:"np",mu:100,spread:3,L:2,A:200,p:30,v:40,rate:0.1,h:4,D:100,a:0,b:200,te:30};
+function initDefaults(){
+  $("dist").value=DEF.dist;
+  ["mu","spread","L","A","p","v","rate","h","D","a","b","te"].forEach(k=>$(k).value=DEF[k]);
+  toggle();
+}
+function toggle(){
+  const d=$("dist").value, hm=radio("hm");
+  $("g_norm").classList.toggle("hidden",!(d==="np"||d==="nl"));
+  $("g_unif").classList.toggle("hidden",d!=="u");
+  $("g_exp").classList.toggle("hidden",d!=="e");
+  $("g_D").classList.toggle("hidden",d==="np");
+  $("g_rate").classList.toggle("hidden",hm!=="rate");
+  $("g_h").classList.toggle("hidden",hm!=="direct");
+}
+
+// ===================== Solver =====================
+function solve(){
+  const out=$("out"); let H="";
+  const dist=$("dist").value, hm=radio("hm"), roundz=$("roundz").checked, maxit=parseInt($("maxit").value)||20;
+  const L=val("L"), A=val("A"), p=val("p");
+  // ---- Step 1: echo inputs
+  let s1=[];
+  let h = hm==="rate" ? val("rate")*val("v") : val("h");
+  s1.push(hm==="rate" ? `h = rate × v = ${val("rate")} × ${val("v")} = ${f(h)} $/unit/period` : `h = ${h} $/unit/period`);
+  s1.push(`A = ${A} $/order,   p = ${p} $/unit short,   L = ${L} periods`);
+
+  // ---- Step 2: lead-time demand
+  let theta, sigma, D, s2=[], kind;
+  if(dist==="np"||dist==="nl"){
+    kind="n"; const mu=val("mu"); let sd=val("spread");
+    if(radio("st")==="var"){ s2.push(`σ = √variance = √${sd} = ${f(Math.sqrt(sd))}`); sd=Math.sqrt(sd); }
+    if(dist==="np"){
+      D=mu; theta=mu*L; sigma=Math.sqrt(L)*sd;
+      s2.push(`D = μ = ${mu} units/period`);
+      s2.push(`θ = μ × L = ${mu} × ${L} = ${f(theta)} units`);
+      s2.push(`σ²_LT = L × σ² = ${L} × ${f(sd)}² = ${f(L*sd*sd)}`);
+      s2.push(`σ_LT = √${f(L*sd*sd)} = ${f(sigma)} units`);
+    } else { D=val("D"); theta=mu; sigma=sd; s2.push(`θ = ${theta},  σ_LT = ${f(sigma)},  D = ${D}`); }
+  } else if(dist==="u"){
+    kind="u"; var a=val("a"), b=val("b"); D=val("D");
+    if(!(b>a)){ out.innerHTML='<p class="err">Uniform: b must be greater than a.</p>'; return; }
+    theta=(a+b)/2; sigma=(b-a)/Math.sqrt(12);
+    s2.push(`X ~ U(${a}, ${b}),  θ = (a+b)/2 = ${f(theta)},  D = ${D}`);
+    s2.push(`G(r) = (r − a)/(b − a)   →   r = a + G·(b − a)`);
+    s2.push(`n(r) = (b − r)² / (2(b − a))`);
+  } else {
+    kind="e"; theta=val("te"); sigma=theta; D=val("D");
+    s2.push(`X ~ Exponential(mean θ = ${theta}),  D = ${D}`);
+    s2.push(`G(r) = 1 − e^(−r/θ)   →   r = −θ·ln(1 − G)`);
+    s2.push(`n(r) = θ·e^(−r/θ)`);
+  }
+  const all=[A,p,h,D,L,theta].concat(kind==="n"?[sigma]:[]);
+  if(all.some(x=>!(x>0)&&x!==0)||[A,p,h,D].some(x=>!(x>0))){ out.innerHTML='<p class="err">Please fill all inputs with positive numbers.</p>'; return; }
+
+  H+=`<div class="step"><b>STEP 1 – Input data</b><div class="mono">${s1.join("\n")}</div></div>`;
+  H+=`<div class="step"><b>STEP 2 – Demand during lead time</b><div class="mono">${s2.join("\n")}</div></div>`;
+  H+=`<div class="step"><b>STEP 3 – Formulas</b><div class="mono">Eq.(1)  Q = √(2D(A + p·n(r)) / h)        (Iter 0: n(r)=0 → EOQ)
+Eq.(2)  1 − G(r) = Q·h / (p·D)
+${kind==="n"?"Normal: z = NORMSINV(G),  r = θ + z·σ,  L(z) = φ(z) − z(1−Φ(z)),  n(r) = σ·L(z)":"Use distribution formulas from Step 2 for r and n(r)"}
+Repeat until Q and r stop changing.</div></div>`;
+
+  // ---- Step 4: iterations
+  H+=`<div class="step"><b>STEP 4 – Iterations</b></div>`;
+  let n=0, rows=[], prev=null, conv=false;
+  for(let it=0; it<maxit; it++){
+    let L4=[];
+    const Q=Math.sqrt(2*D*(A+p*n)/h);
+    L4.push(it===0 ? `(a) Q0 = √(2·A·D/h) = √(2×${A}×${D}/${f(h)}) = ${f(Q)}`
+                   : `(a) Q${it} = √(2·D·(A + p·n(r))/h) = √(2×${D}×(${A} + ${p}×${f(n,5)})/${f(h)}) = ${f(Q)}`);
+    const tail=Q*h/(p*D);
+    L4.push(`(b) 1 − G(r) = Q·h/(p·D) = ${f(Q)}×${f(h)}/(${p}×${D}) = ${f(tail,5)}  →  G(r) = ${f(1-tail,5)}`);
+    if(tail>=1){ H+=`<p class="err">Q·h/(p·D) ≥ 1 → backorder cost too low vs holding cost; no feasible r. Check inputs.</p>`; out.innerHTML=H; return; }
+    const G=1-tail; let r, z=null;
+    if(kind==="n"){
+      z=invcdf(G); if(roundz) z=Math.round(z*100)/100;
+      r=theta+z*sigma;
+      L4.push(`(c) z = NORMSINV(${f(G,5)}) ≈ ${f(z,roundz?2:4)}  →  r = θ + z·σ = ${f(theta,2)} + ${f(z,roundz?2:4)}×${f(sigma)} = ${f(r)}`);
+      const Lz=pdf(z)-z*(1-cdf(z)); n=sigma*Lz;
+      L4.push(`(d) L(z) = φ(z) − z(1−Φ(z)) = ${f(pdf(z),5)} − ${f(z,roundz?2:4)}×${f(1-cdf(z),5)} = ${f(Lz,5)}  →  n(r) = σ·L(z) = ${f(n,5)}`);
+    } else if(kind==="u"){
+      r=a+G*(b-a); n= r<b ? (b-r)**2/(2*(b-a)) : 0;
+      L4.push(`(c) r = a + G·(b − a) = ${a} + ${f(G,5)}×${b-a} = ${f(r)}`);
+      L4.push(`(d) n(r) = (b − r)²/(2(b − a)) = (${b} − ${f(r)})²/${2*(b-a)} = ${f(n,5)}`);
+    } else {
+      r=-theta*Math.log(1-G); n=theta*Math.exp(-r/theta);
+      L4.push(`(c) r = −θ·ln(1 − G) = −${theta}×ln(${f(tail,5)}) = ${f(r)}`);
+      L4.push(`(d) n(r) = θ·e^(−r/θ) = ${f(n,5)}`);
+    }
+    const Y=h*(Q/2+r-theta)+A*D/Q+p*D*n/Q;
+    if(prev){ const dQ=Math.abs(Q-prev.Q), dr=Math.abs(r-prev.r);
+      L4.push(`Change vs previous: |ΔQ| = ${f(dQ)},  |Δr| = ${f(dr)}`);
+      if(dr<0.01 && dQ<0.1 && it>=2){ L4.push("✔ CONVERGED – Q and r no longer change"); conv=true; }
+    }
+    H+=`<div class="step iter"><b>Iteration ${it}</b><div class="mono">${L4.join("\n")}</div></div>`;
+    rows.push({it,Q,tail,G,z,r,n,Y}); prev={Q,r};
+    if(conv) break;
+  }
+
+  // ---- Summary table
+  H+=`<h3>Iteration summary</h3><table><tr><th>Iter</th><th>Q</th><th>1−G(r)</th><th>G(r)</th>${kind==="n"?"<th>z</th>":""}<th>r</th><th>n(r)</th><th>Y(Q,r)</th></tr>`;
+  rows.forEach(R=>{H+=`<tr><td>${R.it}</td><td>${f(R.Q)}</td><td>${f(R.tail,5)}</td><td>${f(R.G,5)}</td>${kind==="n"?`<td>${f(R.z,2)}</td>`:""}<td>${f(R.r)}</td><td>${f(R.n,5)}</td><td>${f(R.Y)}</td></tr>`;});
+  H+=`</table>`;
+
+  // ---- Step 5: result
+  const last=rows[rows.length-1], SS=last.r-theta;
+  const hold=h*(last.Q/2+SS), ord=A*D/last.Q, sh=p*D*last.n/last.Q;
+  H+=`<div class="result"><b>STEP 5 – RESULT</b> ${conv?"(converged)":"<span class='err'>(not converged – raise max iterations)</span>"}
+  <div class="big">Q* = ${Math.ceil(last.Q-1e-9)} units &nbsp;|&nbsp; r* (s*) = ${Math.ceil(last.r-1e-9)} units</div>
+  <div class="mono">Exact: Q = ${f(last.Q)},  r = ${f(last.r)}   (rounded UP for the policy)
+Safety stock SS = r − θ = ${f(last.r)} − ${f(theta)} = ${f(SS)}
+Cycle service level G(r) = ${(last.G*100).toFixed(2)}%     Fill rate 1 − n(r)/Q = ${((1-last.n/last.Q)*100).toFixed(2)}%
+Cost per period: holding ${f(hold,2)} + ordering ${f(ord,2)} + shortage ${f(sh,2)} = ${f(hold+ord+sh,2)}
+
+POLICY: when inventory position drops to ${Math.ceil(last.r-1e-9)}, order ${Math.ceil(last.Q-1e-9)} units.</div></div>`;
+  out.innerHTML=H;
+}
+initDefaults();
+</script>
+</body>
+</html>
